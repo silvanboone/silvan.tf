@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'code';
+    src: url('CascadiaCode.ttf');
+}
+
+:root {
+    --dark: rgb(12, 12, 12);
+    --light: rgb(204, 204, 204);
+}
+
+body {
+    margin: 0;
+
+    background: var(--dark);
+    color: var(--light);
+
+    font-size: .7rem;
+    font-family: 'code';
+}
+
+code {
+    font-family: 'code';
+}
+pre {
+    display: inline;
+}
+.pointer::before {
+    content: 'C:\\>';
+}
+
+.active::after {
+    content: '';
+    background-color: white;
+    display: inline-block;
+
+    position: relative;
+    bottom: -.3em;
+
+    width: .6em;
+    height: .4em;
+
+    animation: blink 1s steps(2, start) infinite;
+}
+
+/* blink animation */
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
