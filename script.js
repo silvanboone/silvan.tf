@@ -141,16 +141,40 @@ function cls() {
 
 }
 
-var current_directory = "\\";
+var current_directory;
 
 function ls() {
+    
     let pointer = getPointer();
-    pointer.innerHTML += directory[current_directory][0].name;
-    makePointer();
+
+    // if no directory is specified, display the current directory
+    let directory_array = current_directory ? directory [current_directory] : directory;
+    
+    for (let key in directory_array) {
+        // if the key is an index, grab its name instead
+        item = directory_array[key].name ? directory_array[key].name : key;
+        pointer.innerHTML += `${item}<br>`;
+    }
+
+    makePointer(1);
 
 }
 
-function cd() {
+function cd(args) {
+
+    let directory_array = current_directory ? directory [current_directory] : directory;
+
+    if (args.length === 0) {
+        current_directory = "";
+        return;
+    }
+
+    for (let key in directory_array) {
+        if (key === args) {
+            current_directory = key;
+            return;
+        }
+    }
     let pointer = getPointer();
     pointer.innerHTML += "cdtest";
     makePointer();

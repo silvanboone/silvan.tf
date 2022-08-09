@@ -1,5 +1,5 @@
 cd set current_directory / follow link 
 ls print current_directory
-
+run with params
 
 linux interface ?

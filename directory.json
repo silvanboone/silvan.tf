@@ -1,11 +1,11 @@
 {
     "socials": [
         {
-            "name": "Steam",
+            "name": "steam",
             "url": "https://steamcommunity.com/profiles/76561198415391988"
         },
         {
-            "name": "Github",
+            "name": "github",
             "url": "https://github.com/silvan12"
         }
     ],
