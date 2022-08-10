@@ -24,8 +24,17 @@ code {
 pre {
     display: inline;
 }
-.pointer::before {
+
+.root::before {
     content: 'C:\\>';
+}
+
+.socials::before {
+    content: 'C:\\socials\\>';
+}
+
+.projects::before {
+    content: 'C:\\projects\\>';
 }
 
 .active::after {

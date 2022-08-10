@@ -5,21 +5,22 @@ setTimeout(demo, 1000);
 
 
 var directory = {};
+var current_directory;
 
 fetch("./directory.json")
     .then(response => response.json())
     .then(data => directory = data);
 
 class Command {
-        constructor(name, desc, func) {
-            this.name = name;
-            this.desc = desc;
-            this.func = func;
-        }
-        run() {
-            this.func();
-        }
+    constructor(name, desc, func) {
+        this.name = name;
+        this.desc = desc;
+        this.func = func;
     }
+    run(args) {
+        this.func(args);
+    }
+}
 
 var commands = [
     new Command("cd", "Changes the current directory.", cd),
@@ -40,8 +41,10 @@ function makePointer(newlines = 2) {
         active.classList.remove("active");
     }
 
+    let directory_style = current_directory ? current_directory : "root";
+
     let pointer = document.createElement("code");
-    pointer.classList.add("pointer", "active");
+    pointer.classList.add(`${directory_style}`, "active");
 
     body.appendChild(pointer);
 
@@ -101,12 +104,12 @@ function enter() {
     }
 
     for (let command of commands) {
-        if (command.name === input.trim().toLowerCase()) {
-            command.run();
+        if (input.trim().toLowerCase().startsWith(command.name)) {
+            args = input.trim().substring(command.name.length).trim();
+            command.run(args);
             return;
         }
     }
-
     pointer.innerHTML += `'${input}' is not recognized as an internal or external command,<br>operable program or batch file.`;
     makePointer();
 }
@@ -141,15 +144,13 @@ function cls() {
 
 }
 
-var current_directory;
-
 function ls() {
-    
+
     let pointer = getPointer();
 
     // if no directory is specified, display the current directory
-    let directory_array = current_directory ? directory [current_directory] : directory;
-    
+    let directory_array = current_directory ? directory[current_directory] : directory;
+
     for (let key in directory_array) {
         // if the key is an index, grab its name instead
         item = directory_array[key].name ? directory_array[key].name : key;
@@ -162,21 +163,35 @@ function ls() {
 
 function cd(args) {
 
-    let directory_array = current_directory ? directory [current_directory] : directory;
-
+    let directory_array = current_directory ? directory[current_directory] : directory;
+   
     if (args.length === 0) {
         current_directory = "";
-        return;
+        return makePointer(0);
+    }
+
+    if (args === "/" || args === "\\" || args === "..") {
+        current_directory = "";
+        return makePointer(1);
     }
 
     for (let key in directory_array) {
         if (key === args) {
             current_directory = key;
-            return;
+            return makePointer(1);
+        }
+        if (directory_array[key].name === args) {
+            window.location.href = directory_array[key].url;
+            return makePointer(1);
         }
     }
+
+    console.table(directory_array);
+
     let pointer = getPointer();
-    pointer.innerHTML += "cdtest";
+
+    pointer.innerHTML += `'${args}' is not a valid location.`;
+
     makePointer();
 
 }
