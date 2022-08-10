@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'code';
-    src: url('CascadiaCode.ttf');
+    src: url('/data/CascadiaCode.ttf');
 }
 
 :root {

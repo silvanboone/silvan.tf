@@ -7,7 +7,7 @@ setTimeout(demo, 1000);
 var directory = {};
 var current_directory;
 
-fetch("./directory.json")
+fetch("./data/directory.json")
     .then(response => response.json())
     .then(data => directory = data);
 
@@ -139,7 +139,14 @@ function help() {
 }
 
 function cls() {
-    body.innerHTML = "<br>";
+    body.innerHTML = `
+    <code>
+    silvan.tf [Version 1.0] <br>
+    welcome to silvan.tf <br><br>
+</code>
+
+    
+    `;
     makePointer();
 
 }
@@ -164,7 +171,7 @@ function ls() {
 function cd(args) {
 
     let directory_array = current_directory ? directory[current_directory] : directory;
-   
+
     if (args.length === 0) {
         current_directory = "";
         return makePointer(0);
@@ -185,8 +192,6 @@ function cd(args) {
             return makePointer(1);
         }
     }
-
-    console.table(directory_array);
 
     let pointer = getPointer();
 
