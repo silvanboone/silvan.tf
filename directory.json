@@ -11,12 +11,16 @@
     ],
     "projects": [
         {
-            "name": "Project 1",
-            "url": "https://github.com/silvan12"
+            "name": "silvan.tf",
+            "url": "https://github.com/silvan12/silvan.tf"
         },
         {
-            "name": "Project 2",
-            "url": "https://github.com/silvan12"
+            "name": "game-of-life in python",
+            "url": "https://github.com/silvan12/game-of-life-py"
+        },
+        {
+            "name": "personinmotorizedwheelchair.com",
+            "url": "https://github.com/silvan12/personinmotorizedwheelchair.com"
         }
     ]
 }

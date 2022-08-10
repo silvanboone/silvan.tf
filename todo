@@ -1,9 +1,6 @@
 cd set current_directory / follow link 
 ls print current_directory
-run with params
 
-cd .., cd / not working
 ctrl c for new pointer
-
 
 linux interface ?
