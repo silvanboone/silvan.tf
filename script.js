@@ -1,11 +1,10 @@
 var body = document.querySelector("body");
-
 let i = 0;
-setTimeout(demo, 1000);
-
 
 var directory = {};
 var current_directory = "";
+
+redirect();
 
 fetch("./data/directory.json")
     .then(response => response.json())
@@ -27,8 +26,30 @@ var commands = [
     new Command("cls", "Clears the screen.", cls),
     new Command("help", "Provides Help information for commands.", help),
     new Command("ls", "Displays a list of files and subdirectories in the directory.", ls),
-    new Command("exit", "Exits the program.", exit, false),
+    new Command("exit", "Exits the program.", exit),
 ];
+
+function redirect() {
+    // get url path without the leading slash
+    let path = window.location.pathname.substring(1);
+
+    fetch("./data/redirects.json")
+        .then(response => response.json())
+        .then(
+            (data) => {
+                if (!path) {
+                    setTimeout(window.demo, 1000, "help");
+                    return;
+                }
+                if (data[path]) {
+                    window.location.href = data[path];
+                    return;
+                }
+
+                setTimeout(demo, 1000, "type 404.txt");
+            }
+        );
+}
 
 
 function getPointer() {
@@ -50,8 +71,6 @@ function makePointer(newlines = 2) {
     pointer.id = "active";
 
     body.appendChild(pointer);
-
-    return;
 }
 
 
@@ -61,13 +80,13 @@ function demo(text = "help") {
     if (i < text.length) {
         pointer.innerHTML += text.charAt(i);
         i++
-        setTimeout(demo, 100);
+        setTimeout(demo, 100, text);
         return;
     }
 
+    i = 0;
     setTimeout(enter, 500)
 }
-
 
 document.onkeydown = function (event) {
     if (!getPointer()) {
@@ -110,6 +129,11 @@ function enter() {
         return;
     }
 
+    if (input.trim().toLowerCase() === "type 404.txt") {
+        type();
+        return;
+    }
+
     for (let command of commands) {
         if (input.trim().toLowerCase().startsWith(command.name)) {
             args = input.trim().substring(command.name.length).trim();
@@ -145,14 +169,7 @@ function help() {
 }
 
 function cls() {
-    body.innerHTML = `
-    <code>
-    silvan.tf [Version 1.0] <br>
-    welcome to silvan.tf <br><br>
-</code>
-
-    
-    `;
+    body.innerHTML = "<br>"
     makePointer();
 
 }
@@ -205,6 +222,28 @@ function cd(args) {
 
     makePointer();
 
+}
+
+function type() {
+    let pre = document.createElement("pre");
+    pre.innerHTML = `
+
+         .---.    .----.      .---.   
+        / .  |   /  ..  \\    / .  |   
+       / /|  |  .  /  \\  .  / /|  |   
+      / / |  |_ |  |  '  | / / |  |_  
+     /  '-'    |'  \\  /  '/  '-'    | 
+     \`----|  |-' \\  \`'  / \`----|  |-' 
+          \`--'    \`---''       \`--'   
+
+
+              Page not found
+
+
+`;
+
+    body.appendChild(pre);
+    makePointer(0);
 }
 
 function exit() {
