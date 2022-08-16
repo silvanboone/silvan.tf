@@ -5,7 +5,7 @@ setTimeout(demo, 1000);
 
 
 var directory = {};
-var current_directory;
+var current_directory = "";
 
 fetch("./data/directory.json")
     .then(response => response.json())
@@ -27,24 +27,27 @@ var commands = [
     new Command("cls", "Clears the screen.", cls),
     new Command("help", "Provides Help information for commands.", help),
     new Command("ls", "Displays a list of files and subdirectories in the directory.", ls),
+    new Command("exit", "Exits the program.", exit, false),
 ];
 
 
 function getPointer() {
-    return document.querySelector(".active");
+    return document.querySelector("#active");
 }
 
 function makePointer(newlines = 2) {
     let active = getPointer();
     if (active) {
         active.innerHTML += "<br>".repeat(newlines);
-        active.classList.remove("active");
+        // remove class id
+        active.removeAttribute("id");
     }
 
-    let directory_style = current_directory ? current_directory : "root";
-
     let pointer = document.createElement("code");
-    pointer.classList.add(`${directory_style}`, "active");
+    // add to data list
+    pointer.dataset.path = `C:\\${current_directory}>`;
+    pointer.classList.add('pointer');
+    pointer.id = "active";
 
     body.appendChild(pointer);
 
@@ -68,6 +71,10 @@ function demo(text = "help") {
 
 document.onkeydown = function (event) {
     if (!getPointer()) {
+        return;
+    }
+    if (event.key === "c" && event.ctrlKey) {
+        makePointer()
         return;
     }
     if (event.key === "Enter") {
@@ -129,7 +136,6 @@ function help() {
 
     for (let command of commands) {
         // capitalize command name
-
         pre.innerHTML += `${command.name.toUpperCase()} &#9; ${command.desc}<br>`;
     }
 
@@ -199,4 +205,8 @@ function cd(args) {
 
     makePointer();
 
+}
+
+function exit() {
+    window.close();
 }

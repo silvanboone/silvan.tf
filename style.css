@@ -4,8 +4,8 @@
 }
 
 :root {
-    --dark: rgb(12, 12, 12);
-    --light: rgb(204, 204, 204);
+    --dark: #0c0c0c;
+    --light: #cccccc;
 }
 
 body {
@@ -25,19 +25,11 @@ pre {
     display: inline;
 }
 
-.root::before {
-    content: 'C:\\>';
+.pointer::before{
+    content: attr(data-path); 
 }
 
-.socials::before {
-    content: 'C:\\socials\\>';
-}
-
-.projects::before {
-    content: 'C:\\projects\\>';
-}
-
-.active::after {
+#active::after {
     content: '';
     background-color: white;
     display: inline-block;
