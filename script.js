@@ -154,11 +154,15 @@ function enter() {
     // empty input
     if (input.trim() === "") {
         makePointer(0);
+        terminal.scrollTop = terminal.scrollHeight;
+
         return;
     }
 
     if (input.trim().toLowerCase() === "type 404.txt") {
         type();
+        terminal.scrollTop = terminal.scrollHeight;
+
         return;
     }
 
@@ -166,6 +170,8 @@ function enter() {
         if (input.trim().toLowerCase().startsWith(command.name)) {
             args = input.trim().substring(command.name.length).trim();
             command.run(args);
+            terminal.scrollTop = terminal.scrollHeight;
+
             return;
         }
     }
