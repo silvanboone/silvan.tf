@@ -1,14 +1,5 @@
-var body = document.querySelector("body");
-let i = 0;
-
-var directory = {};
-var current_directory = "";
-
-redirect();
-
-fetch("./data/directory.json")
-    .then(response => response.json())
-    .then(data => directory = data);
+var terminal = document.querySelector("terminal");
+var keyboard = document.querySelector("keyboard");
 
 class Command {
     constructor(name, desc, func) {
@@ -28,6 +19,69 @@ var commands = [
     new Command("ls", "Displays a list of files and subdirectories in the directory.", ls),
     new Command("exit", "Exits the program.", exit),
 ];
+
+let i = 0;
+
+var directory = {};
+var current_directory = "";
+
+redirect();
+
+fetch("./data/directory.json")
+    .then(response => response.json())
+    .then(data => directory = data);
+
+
+// on key press handle key 
+document.addEventListener("keydown", (e) => {
+    HandleKey(e.key);
+} );
+
+
+keyboard.addEventListener("click", function (event) {
+    let key = event.target;
+    if (key.tagName !== "KEY") {
+        return;
+    }
+    if (key.id) {
+        key = key.id === "space" ? " " : key.id;
+        HandleKey(key.charAt(0).toUpperCase() + key.substring(1));
+        return;
+    }
+
+    HandleKey(key.innerHTML);
+
+});
+
+function HandleKey(key) {
+    if (!getPointer()) {
+        return;
+    }
+    if (key === "c" && key.ctrlKey) {
+        makePointer()
+        return;
+    }
+    if (key === "Enter") {
+        enter();
+        return;
+    }
+
+    if (key === "Backspace") {
+        backspace();
+        return;
+    }
+
+    if (key.length !== 1) {
+        return;
+    }
+
+    let pointer = getPointer();
+    pointer.innerHTML += key;
+
+    return;
+}
+
+
 
 function redirect() {
     // get url path without the leading slash
@@ -70,7 +124,7 @@ function makePointer(newlines = 2) {
     pointer.classList.add('pointer');
     pointer.id = "active";
 
-    body.appendChild(pointer);
+    terminal.appendChild(pointer);
 }
 
 
@@ -88,33 +142,7 @@ function demo(text = "help") {
     setTimeout(enter, 500)
 }
 
-document.onkeydown = function (event) {
-    if (!getPointer()) {
-        return;
-    }
-    if (event.key === "c" && event.ctrlKey) {
-        makePointer()
-        return;
-    }
-    if (event.key === "Enter") {
-        enter();
-        return;
-    }
 
-    if (event.key === "Backspace") {
-        backspace();
-        return;
-    }
-
-    if (event.key.length !== 1) {
-        return;
-    }
-
-    let pointer = getPointer();
-    pointer.innerHTML += event.key;
-
-    return;
-}
 
 function enter() {
     let pointer = getPointer();
@@ -141,8 +169,12 @@ function enter() {
             return;
         }
     }
+
+    
     pointer.innerHTML += `'${input}' is not recognized as an internal or external command,<br>operable program or batch file.`;
     makePointer();
+    
+    terminal.scrollTop = terminal.scrollHeight;
 }
 
 function backspace() {
@@ -169,7 +201,7 @@ function help() {
 }
 
 function cls() {
-    body.innerHTML = "<br>"
+    terminal.innerHTML = "<br>"
     makePointer();
 
 }
@@ -242,7 +274,7 @@ function type() {
 
 `;
 
-    body.appendChild(pre);
+    terminal.appendChild(pre);
     makePointer(0);
 }
 

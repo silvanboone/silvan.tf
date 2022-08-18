@@ -8,25 +8,105 @@
     --light: #cccccc;
 }
 
+
+/* on phones */
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     margin: 0;
-
     background: var(--dark);
     color: var(--light);
 
-    font-size: .7rem;
     font-family: 'code';
 }
+
+terminal {
+    display: block;
+    overflow-y: scroll;
+    font-size: .7rem;
+
+    height: 70%;
+}
+
+keyboard {
+    display: block;
+
+    white-space: nowrap;
+    font-size: 0; /* remove whitespace between characters */
+}
+
+keys {
+    display: block;
+    text-align: center;
+}
+
+key {
+    display: inline-block;
+
+    min-width: 7%;
+ 
+    border: solid 1px var(--light);
+    border-radius: .25rem;
+
+    font-size: 1rem;
+    text-align: center;
+    line-height: 3rem;
+
+    
+    cursor: pointer;
+}
+
+#backspace {
+    width: 10%;
+}
+
+#backslash {
+    width: 7.5%;
+}
+
+#enter {
+    width: 10%;
+}
+
+#shift {
+    width: 10%;
+}
+
+#space {
+    width: 50%;
+}
+
+key:hover {
+    background: var(--light);
+    color: var(--dark);
+}
+
+
+
+@media (min-width: 600px) {
+    keyboard {
+        display: none;
+    }
+    terminal {
+        height: 100%;
+    }
+}
+
 
 code {
     font-family: 'code';
 }
+
 pre {
     display: inline;
 }
 
-.pointer::before{
-    content: attr(data-path); 
+.pointer::before {
+    content: attr(data-path);
 }
 
 #active::after {
